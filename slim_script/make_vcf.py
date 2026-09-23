@@ -8,7 +8,7 @@ import subprocess, gzip
 import numpy as np
 
 base_pop_size = 1000000
-q_val = 625
+q_val = 250
 
 pop_size = base_pop_size / q_val
 r_rate = 1e-8 * q_val
@@ -16,10 +16,10 @@ u_rate = 3e-9 * q_val
 length = 10e+3
 
 pn = 0.5
-pb = 0.0
-pd = 0.5
+pb = 0.5 * 0.0002
+pd = 0.5 * (1 - 0.0002)
 
-bs = 125.0 / 4.0 / pop_size
+bs = 250.0 / 4.0 / pop_size
 ds = 100.0 / 4.0 / pop_size
 
 t = 14 * pop_size

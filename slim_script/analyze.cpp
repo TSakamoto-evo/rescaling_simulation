@@ -21,7 +21,7 @@ int main(){
 
   std::random_device seed;
   std::mt19937 mt(seed());
-  std::uniform_int_distribution<> choose(0, max_snps);
+  std::uniform_real_distribution<> uni(0.0, 1.0);
 
   std::ifstream ifs("sample.vcf");
   if(!ifs){
@@ -107,7 +107,11 @@ int main(){
           genotype.push_back(this_site);
           pos.push_back(std::stoi(list.at(1)));
         }else{
-          int rep = choose(mt);
+          int rep = (site_number * uni(mt));
+          if(rep == site_number){
+            rep--;
+          }
+
           if(rep < max_snps){
             genotype.at(rep) = this_site;
             pos.at(rep) = std::stoi(list.at(1));
