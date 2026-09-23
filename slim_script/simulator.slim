@@ -1,0 +1,31 @@
+initialize() {
+	initializeMutationType("m1", 0.5, "f", 0.0);
+	initializeMutationType("m2", 0.5, "e", sb);
+	initializeMutationType("m3", 0.5, "f", -sd);
+	
+	initializeGenomicElementType("g1", c(m1, m2, m3), c(pn, pb, pd));
+	initializeGenomicElement(g1, 0, asInteger(L)-1);
+	initializeMutationRate(u);
+	initializeRecombinationRate(r);
+	
+	defineGlobal("start", clock());
+}
+
+mutationEffect(m2) { return 1.0; }
+mutationEffect(m3) { return 1.0; }
+
+1 early(){
+	sim.addSubpop("p1", asInteger(N));	
+}
+
+1:asInteger(simend) late(){
+	inds = sim.subpopulations.individuals;
+	phenotypes = inds.sumOfMutationsOfType(m2) + inds.sumOfMutationsOfType(m3);
+	inds.fitnessScaling = exp(phenotypes);
+}
+
+asInteger(simend) late(){
+	p1.outputVCFSample(50, replace=F, filePath="sample.vcf");
+	sim.outputFixedMutations(filePath="substitutions.txt");
+	sim.simulationFinished();
+}
